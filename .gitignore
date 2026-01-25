@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual environments
+.venv/
+.env
+
+# OS files
+.DS_Store
+
+# Data files (do not commit large datasets)
+data/
+
