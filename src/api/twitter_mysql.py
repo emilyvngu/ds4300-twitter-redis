@@ -81,3 +81,16 @@ class TwitterMySQL:
             cur.execute(sql, (user_id, limit))
             rows = cur.fetchall()
         return [Tweet(tweet_id=r[0], user_id=r[1], tweet_ts=str(r[2]), tweet_text=r[3]) for r in rows]
+    
+    def get_home_timeline_conn(self, conn, user_id: int, limit: int = 10):
+        sql = """
+        SELECT t.tweet_id, t.user_id, t.tweet_ts, t.tweet_text
+        FROM follows f
+        JOIN tweet t ON t.user_id = f.followee_id
+        WHERE f.follower_id = %s
+        ORDER BY t.tweet_ts DESC
+        LIMIT %s
+        """
+        cur = conn.cursor()
+        cur.execute(sql, (user_id, limit))
+        return cur.fetchall()
