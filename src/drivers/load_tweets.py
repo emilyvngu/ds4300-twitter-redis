@@ -4,7 +4,7 @@ from src.api.twitter_mysql import TwitterMySQL
 
 CSV_PATH = "data/tweet.csv"
 
-def main(max_tweets: int = 100_000, progress_every: int = 10_000):
+def main(max_tweets=1_000_000, progress_every: int = 10_000):
     api = TwitterMySQL()
 
     n = 0
