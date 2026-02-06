@@ -4,7 +4,7 @@ from src.api.twitter_redis import TwitterRedis
 
 def get_candidate_users(limit: int = 200_000):
     """
-    Return a list of user_ids to sample from during the benchmark.
+    Return a list of user_ids to sample from during the benchmark
     We assume load_follows_redis.py populated a Redis set named 'users'.
     """
     api = TwitterRedis()
