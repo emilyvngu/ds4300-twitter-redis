@@ -5,9 +5,16 @@ from src.api.twitter_redis import TwitterRedis
 CSV_PATH = "data/tweet.csv"
 
 def main(max_tweets=1_000_000, progress_every: int = 10_000):
+    """
+    Load tweets from a CSV file into the database by calling the Twitter API
+    It does this one at a time
+
+    """
     api = TwitterRedis()
 
     n = 0
+
+    #timer start
     t0 = time.perf_counter()
 
     with open(CSV_PATH, newline="", encoding="utf-8") as f:
@@ -16,9 +23,11 @@ def main(max_tweets=1_000_000, progress_every: int = 10_000):
         first_line = f.readline()
         f.seek(0)
 
+        # If the first line contains letters, it’s probably a header
         has_header = any(ch.isalpha() for ch in first_line)  # crude but effective
         reader = csv.DictReader(f) if has_header else csv.reader(f)
 
+        # Read and insert rows one by one:
         for row in reader:
             try:
                 if has_header:
@@ -45,6 +54,7 @@ def main(max_tweets=1_000_000, progress_every: int = 10_000):
                     elapsed = time.perf_counter() - t0
                     print(f"Inserted {n:,} tweets in {elapsed:.2f}s  ({n/elapsed:.2f} calls/sec)")
 
+                # Stop once we reach the max tweet target
                 if n >= max_tweets:
                     break
 
@@ -52,6 +62,7 @@ def main(max_tweets=1_000_000, progress_every: int = 10_000):
                 # skip malformed rows safely
                 continue
 
+    # Final result
     elapsed = time.perf_counter() - t0
     print(f"\nDONE: Inserted {n:,} tweets in {elapsed:.2f}s => {n/elapsed:.2f} postTweet calls/sec")
 
