@@ -3,6 +3,15 @@ from src.api.twitter_mysql import TwitterMySQL
 import random
 import time
 
+def get_candidate_users(limit: int = 200_000):
+    """
+    Return a list of follower_ids to sample from during the benchmark.
+    """
+    db = DBUtils.from_env()
+    df = db.execute(f"SELECT DISTINCT follower_id FROM FOLLOWS LIMIT {limit}")
+    db.close()
+    return df["follower_id"].tolist()
+
 def main(iterations: int = 50_000, progress_every: int = 5_000, seed: int = 42):
     random.seed(seed)
 

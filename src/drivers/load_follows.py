@@ -13,3 +13,4 @@ def main():
             db.insert_one(sql, (int(row["follower_id"]), int(row["followee_id"])))
 
     db.close()
+

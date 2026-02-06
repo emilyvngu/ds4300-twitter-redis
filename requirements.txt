@@ -1,3 +1,4 @@
 mysql-connector-python==9.5.0
 python-dotenv
 pandas
+redis
